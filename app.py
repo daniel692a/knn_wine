@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
-
+import seaborn as sns
 
 def most_common(lst):
     return max(set(lst), key=lst.count)
@@ -60,12 +60,6 @@ ax.set(xlabel="k",
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 test_accuracy = []
 
-""" knn = KNeighborsClassifier(k=3)
-knn.fit(X_train, y_train)
-y_pred = knn.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy:", accuracy) """
-
 for i in ks:
     knn = KNeighborsClassifier(k=i)
     knn.fit(X_train, y_train)
@@ -79,4 +73,12 @@ ax.plot(ks, accuracies)
 ax.set(xlabel="k",
        ylabel="Accuracy",
        title="Performance of knn from sklearn")
+plt.show()
+
+y_pred = knn.predict(X_test)
+cm = confusion_matrix(y_test, y_pred)
+
+df_cm = pd.DataFrame(cm, range(3), range(3))
+sns.set(font_scale=1.4)
+sns.heatmap(df_cm, annot=True, annot_kws={"size": 16})
 plt.show()
